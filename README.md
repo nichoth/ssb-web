@@ -14,3 +14,7 @@ Read a log stored at `~/.ssb-ev-DEV`, returning messages of type 'ev.post'
 $ node index.js ssb-ev-DEV ev.post
 ```
 
+## TODO
+* pipe to stdout, don't use console.log
+
+
