@@ -1,4 +1,11 @@
 {
+  "name": "ssb-web",
+  "description": "Pronounced 'sbweb'",
+  "version": "0.0.0",
+  "main": "index.js",
+  "bin": {
+      "ssbweb": "./index.js"
+  }
   "dependencies": {
     "pull-stream": "^3.6.14",
     "ssb-caps": "^1.1.0",
@@ -7,10 +14,6 @@
     "ssb-master": "^1.0.3",
     "ssb-server": "^16.0.1"
   },
-  "name": "ssb-web",
-  "description": "Pronounced 'sbweb'",
-  "version": "0.0.0",
-  "main": "index.js",
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
