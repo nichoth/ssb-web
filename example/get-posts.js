@@ -4,6 +4,15 @@ var S = require('pull-stream')
 ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
     S(
         ssbWeb.getPosts({ id, sbot, type: 'ev.post' }),
+
+        S.through(function noop (arg) {}, function onEnd (err) {
+            console.log('**on end**', err)
+            sbot.close(null, function (err) {
+                console.log('closed', err)
+            })
+            if (err) throw err
+        }),
+
         S.collect((err, msgs) => {
             console.log('collected messages', err, msgs)
         })

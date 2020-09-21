@@ -41,7 +41,6 @@ var ssbWeb = {
 }
 
 if (require.main === module) {
-    console.log('bbbbooooo')
     var args = minimist(process.argv.slice(2));
     console.log('args', args)
     var appName =  args._[0] || 'ssb'
