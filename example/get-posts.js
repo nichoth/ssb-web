@@ -5,7 +5,7 @@ ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
     S(
         ssbWeb.getPosts({ id, sbot, type: 'ev.post' }),
 
-        S.through(function noop (arg) {}, function onEnd (err) {
+        S.through(function noop () {}, function onEnd (err) {
             console.log('**on end**', err)
             sbot.close(null, function (err) {
                 console.log('closed', err)
@@ -15,6 +15,8 @@ ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
 
         S.collect((err, msgs) => {
             console.log('collected messages', err, msgs)
+            // type, text, mentions
+            console.log('content', msgs[0].value.content)
         })
     )
 })
