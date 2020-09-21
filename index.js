@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var Sbot = require('ssb-server')
 var ssbConfigInject = require('ssb-config/inject')
 var caps = require('ssb-caps')

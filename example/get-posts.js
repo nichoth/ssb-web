@@ -2,6 +2,7 @@ var ssbWeb = require('../')
 var S = require('pull-stream')
 
 ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
+    console.log('aaaaaaaa', id)
     S(
         ssbWeb.getPosts({ id, sbot, type: 'ev.post' }),
 
@@ -15,7 +16,7 @@ ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
 
         S.collect((err, msgs) => {
             console.log('collected messages', err, msgs)
-            // type, text, mentions
+            // { type, text, mentions }
             console.log('content', msgs[0].value.content)
         })
     )
