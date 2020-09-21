@@ -6,19 +6,9 @@ var path = require('path')
 var S = require('pull-stream')
 var minimist = require('minimist')
 
-function startSbot (cb) {
+function startSbot (appName, cb) {
     // -------- setup --------------------
-    var args = minimist(process.argv.slice(2));
-    console.log('args', args)
-    var type = args._[1]
-    var appName = 'ssb'
-    if (args._[0]) {
-        appName = args._[0]
-    }
-    console.log('appname', appName)
-
-    var opts = {}
-    opts.caps = caps
+    var opts = { caps }
     var config = ssbConfigInject(appName, opts)
     var keyPath = path.join(config.path, 'secret')
     config.keys = ssbKeys.loadOrCreateSync(keyPath)
@@ -32,22 +22,35 @@ function startSbot (cb) {
 
     sbot.whoami(function (err, info) {
         var { id } = info
-        cb(err, { id, sbot, type })
+        cb(err, { id, sbot })
     })
 }
 
 function getPosts ({ id, sbot, type }) {
      return S(
-        sbot.createUserStream({ id: id }),
+        sbot.createUserStream({ id }),
         S.filter(function (msg) {
             return msg.value.content.type === type
         })
     )
 }
 
+var ssbWeb = {
+    getPosts,
+    startSbot
+}
+
 if (require.main === module) {
-    startSbot(function (err, { id, sbot, type }) {
-        console.log('in herre', id)
+    console.log('bbbbooooo')
+    var args = minimist(process.argv.slice(2));
+    console.log('args', args)
+    var appName =  args._[0] || 'ssb'
+    console.log('appname', appName)
+    var type = args._[1] || 'post'
+
+    startSbot(appName, function (err, { id, sbot }) {
+        if (err) throw err
+
         S(
             getPosts({ id, sbot, type }),
             S.collect(function (err, msgs) {
@@ -62,4 +65,6 @@ if (require.main === module) {
         )
     })
 }
+
+module.exports = ssbWeb
 
