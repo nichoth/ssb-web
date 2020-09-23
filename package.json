@@ -1,10 +1,10 @@
 {
   "name": "ssb-web",
   "description": "Pronounced 'sbweb'",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "index.js",
   "bin": {
-      "ssbweb": "./index.js"
+    "ssbweb": "./index.js"
   },
   "dependencies": {
     "pull-stream": "^3.6.14",
