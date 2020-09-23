@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 var Sbot = require('ssb-server')
 var ssbConfigInject = require('ssb-config/inject')
 var caps = require('ssb-caps')
@@ -43,7 +42,7 @@ var ssbWeb = {
 }
 
 if (require.main === module) {
-    var args = minimist(process.argv.slice(2));
+    var args = minimist(process.argv.slice(2))
     console.log('args', args)
     var appName =  args._[0] || 'ssb'
     console.log('appname', appName)
@@ -59,6 +58,8 @@ if (require.main === module) {
                 console.log('**content**', msgs[0].value.content)
                 // need to get the msg.value.content.mentions[0] hash from
                 // the blob store
+                // see https://github.com/ssbc/ssb-serve-blobs/blob/master/index.js#L50
+                // it looks like `sbot.blobs.get`
                 sbot.close(null, function (err) {
                     console.log('closed', err)
                 })
@@ -68,4 +69,3 @@ if (require.main === module) {
 }
 
 module.exports = ssbWeb
-
