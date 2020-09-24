@@ -48,3 +48,8 @@ You can pipe the blob stream to the fs module
 toStream(sbot.blobs.get(hash))
     .pipe(fs.createWriteStream(path))
 ```
+
+
+Make a static site generator that creates a page for each post
+
+

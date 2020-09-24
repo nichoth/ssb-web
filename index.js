@@ -7,6 +7,7 @@ var path = require('path')
 var S = require('pull-stream')
 var minimist = require('minimist')
 var WriteFile = require('pull-write-file')
+var scan = require('pull-scan')
 // var FileType = require('file-type');
 // var tee = require('pull-tee')
 
@@ -67,6 +68,14 @@ if (require.main === module) {
                 })
             }),
 
+            // S.map(post => { return {post, n: 0} }),
+            // scan(function (acc, val) {
+            //     console.log('acc', acc)
+            //     console.log('val', val)
+            //     var {post, n} = val
+            //     return { post, n: (acc[n] || n) + 1 }
+            // }),
+
             S.map(function (post) {
                 var _n = n
                 n++
@@ -76,8 +85,11 @@ if (require.main === module) {
             S.drain(function ({ post, n }) {
                 var hash = post.value.content.mentions[0].link
                 console.log('hash', hash)
-                console.log('post here', post)
+                // console.log('post here', post)
                 console.log('nnnnnnn', n)
+
+                // post.value.content
+                // { type, text, mentions }
 
                 S(
                     sbot.blobs.get(hash),
