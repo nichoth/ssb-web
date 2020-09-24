@@ -13,7 +13,6 @@ Read a log stored at `~/.ssb-ev-DEV`, returning messages of type 'ev.post'
 $ ./index.js ssb-ev-DEV ev.post
 ```
 
-
 ## API example
 ```js
 var ssbWeb = require('../')
@@ -32,8 +31,6 @@ ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
 
         S.collect((err, msgs) => {
             console.log('collected messages', err, msgs)
-            // { type, text, mentions }
-            console.log('content', msgs[0].value.content)
         })
     )
 })
@@ -43,3 +40,11 @@ https://medium.com/netscape/a-guide-to-create-a-nodejs-command-line-package-c216
 
 [sbot.blobs.get](https://github.com/ssbc/ssb-serve-blobs/blob/master/index.js#L50)
 
+[blobs.get method](https://github.com/ssbc/multiblob#blobsget-hash--opts--source)
+
+
+You can pipe the blob stream to the fs module
+```js
+toStream(sbot.blobs.get(hash))
+    .pipe(fs.createWriteStream(path))
+```

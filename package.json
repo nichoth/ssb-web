@@ -7,7 +7,12 @@
     "ssbweb": "./index.js"
   },
   "dependencies": {
+    "file-type": "^15.0.1",
+    "pull-scan": "^1.0.0",
     "pull-stream": "^3.6.14",
+    "pull-tee": "^2.0.1",
+    "pull-write-file": "^0.2.4",
+    "ssb-blobs": "^1.2.3",
     "ssb-caps": "^1.1.0",
     "ssb-config": "^3.4.5",
     "ssb-keys": "^7.2.2",

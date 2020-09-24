@@ -6,6 +6,10 @@ var ssbKeys = require('ssb-keys')
 var path = require('path')
 var S = require('pull-stream')
 var minimist = require('minimist')
+var WriteFile = require('pull-write-file')
+// var FileType = require('file-type');
+// var tee = require('pull-tee')
+
 
 function startSbot (appName, cb) {
     // -------- setup --------------------
@@ -19,6 +23,7 @@ function startSbot (appName, cb) {
 
     var sbot = Sbot
         .use(require('ssb-master'))
+        .use(require('ssb-blobs'))
         .call(null, config)
 
     sbot.whoami(function (err, info) {
@@ -51,18 +56,36 @@ if (require.main === module) {
     startSbot(appName, function (err, { id, sbot }) {
         if (err) throw err
 
+        var n = 0
         S(
             getPosts({ id, sbot, type }),
-            S.collect(function (err, msgs) {
-                console.log('msgs', msgs)
-                console.log('**content**', msgs[0].value.content)
-                // need to get the msg.value.content.mentions[0] hash from
-                // the blob store
-                // see https://github.com/ssbc/ssb-serve-blobs/blob/master/index.js#L50
-                // it looks like `sbot.blobs.get`
+
+            S.through(function noop(){}, function onEnd (err) {
+                if (err) throw err
                 sbot.close(null, function (err) {
-                    console.log('closed', err)
+                    console.log('sbot closed', err)
                 })
+            }),
+
+            S.map(function (post) {
+                var _n = n
+                n++
+                return { post, n: _n }
+            }),
+
+            S.drain(function ({ post, n }) {
+                var hash = post.value.content.mentions[0].link
+                console.log('hash', hash)
+                console.log('post here', post)
+                console.log('nnnnnnn', n)
+
+                S(
+                    sbot.blobs.get(hash),
+                    WriteFile((__dirname + '/file'+n), {}, function (err) {
+                        console.log('file written', err)
+                        if (err) throw err
+                    })
+                )
             })
         )
     })
