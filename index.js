@@ -7,7 +7,8 @@ var path = require('path')
 var S = require('pull-stream')
 var minimist = require('minimist')
 var WriteFile = require('pull-write-file')
-var scan = require('pull-scan')
+var mkdirp = require('mkdirp')
+// var scan = require('pull-scan')
 // var FileType = require('file-type');
 // var tee = require('pull-tee')
 
@@ -53,6 +54,7 @@ if (require.main === module) {
     var appName =  args._[0] || 'ssb'
     console.log('appname', appName)
     var type = args._[1] || 'post'
+    var blobsDir = args.blobs || ''
 
     startSbot(appName, function (err, { id, sbot }) {
         if (err) throw err
@@ -84,16 +86,16 @@ if (require.main === module) {
 
             S.drain(function ({ post, n }) {
                 var hash = post.value.content.mentions[0].link
-                console.log('hash', hash)
-                // console.log('post here', post)
-                console.log('nnnnnnn', n)
+                if (!hash) return
 
                 // post.value.content
                 // { type, text, mentions }
 
+                mkdirp.sync(__dirname + '/' + blobsDir)
+                var filePath = __dirname+ '/' + blobsDir + '/file'+n
                 S(
                     sbot.blobs.get(hash),
-                    WriteFile((__dirname + '/file'+n), {}, function (err) {
+                    WriteFile(filePath, {}, function (err) {
                         console.log('file written', err)
                         if (err) throw err
                     })
