@@ -10,19 +10,24 @@ The ssb app name is passed as the first CLI argument
 ## example
 Read a log stored at `~/.ssb-ev-DEV`, returning messages of type 'ev.post'
 ```
-$ ./index.js ssb-ev-DEV ev.post
+$ ./index.js ssb-ev-DEV ev.post --blobs=example-dir
 ```
 
 ## API example
 ```js
-var ssbWeb = require('../')
+var ssbWeb = require('ssb-web')
 var S = require('pull-stream')
 
 ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
     S(
         ssbWeb.getPosts({ id, sbot, type: 'ev.post' }),
 
+        // this means `current-directpry/example/blobs-dir`
+        ssbWeb.writeFiles(sbot, 'example/blobs-dir'),
+
         S.through(function noop () {}, function onEnd (err) {
+            // close the sbot here
+            console.log('**on end**', err)
             sbot.close(null, function (err) {
                 console.log('closed', err)
             })
@@ -30,30 +35,16 @@ ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
         }),
 
         S.collect((err, msgs) => {
+            // msgs is [{post, blob}]
+            // blob is the slugified filename
             console.log('collected messages', err, msgs)
+            // { type, text, mentions }
+            console.log('content', msgs[0].value.content)
         })
     )
 })
 ```
 
----------------------------------------------------
-
-## notes
-https://medium.com/netscape/a-guide-to-create-a-nodejs-command-line-package-c2166ad0452e -- a nice node CLI guide
-
-[sbot.blobs.get](https://github.com/ssbc/ssb-serve-blobs/blob/master/index.js#L50)
-
-[blobs.get method](https://github.com/ssbc/multiblob#blobsget-hash--opts--source)
-
-
-You can pipe the blob stream to the fs module
-```js
-toStream(sbot.blobs.get(hash))
-    .pipe(fs.createWriteStream(path))
-```
-
-
-Make a static site generator that creates a page for each post
 
 ----------------------------------------------------------------
 
