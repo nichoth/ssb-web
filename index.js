@@ -8,6 +8,8 @@ var S = require('pull-stream')
 var minimist = require('minimist')
 var WriteFile = require('pull-write-file')
 var mkdirp = require('mkdirp')
+// var filenamify = require('filenamify')
+var slugify = require('@sindresorhus/slugify')
 // var scan = require('pull-scan')
 // var FileType = require('file-type');
 // var tee = require('pull-tee')
@@ -43,9 +45,30 @@ function getPosts ({ id, sbot, type }) {
     )
 }
 
+function writeFiles (sbot, dir) {
+    return S.map(function (post) {
+        var hash = post.value.content.mentions[0].link
+        var slug = slugify(hash)
+        if (!hash) return
+        mkdirp.sync(dir)
+        var filePath = path.resolve(dir, slug)
+
+        S(
+            sbot.blobs.get(hash),
+            WriteFile(filePath, {}, function (err) {
+                console.log('file written', err)
+                if (err) throw err
+            })
+        )
+
+        return { post, blob: slug }
+    })
+}
+
 var ssbWeb = {
     getPosts,
-    startSbot
+    startSbot,
+    writeFiles
 }
 
 if (require.main === module) {
@@ -54,12 +77,11 @@ if (require.main === module) {
     var appName =  args._[0] || 'ssb'
     console.log('appname', appName)
     var type = args._[1] || 'post'
-    var blobsDir = args.blobs || ''
+    var blobsDir = path.resolve(args.blobs || '')
 
     startSbot(appName, function (err, { id, sbot }) {
         if (err) throw err
 
-        var n = 0
         S(
             getPosts({ id, sbot, type }),
 
@@ -70,36 +92,10 @@ if (require.main === module) {
                 })
             }),
 
-            // S.map(post => { return {post, n: 0} }),
-            // scan(function (acc, val) {
-            //     console.log('acc', acc)
-            //     console.log('val', val)
-            //     var {post, n} = val
-            //     return { post, n: (acc[n] || n) + 1 }
-            // }),
+            writeFiles(sbot, blobsDir),
 
-            S.map(function (post) {
-                var _n = n
-                n++
-                return { post, n: _n }
-            }),
-
-            S.drain(function ({ post, n }) {
-                var hash = post.value.content.mentions[0].link
-                if (!hash) return
-
-                // post.value.content
-                // { type, text, mentions }
-
-                mkdirp.sync(__dirname + '/' + blobsDir)
-                var filePath = __dirname+ '/' + blobsDir + '/file'+n
-                S(
-                    sbot.blobs.get(hash),
-                    WriteFile(filePath, {}, function (err) {
-                        console.log('file written', err)
-                        if (err) throw err
-                    })
-                )
+            S.drain(function ({ post, blob }) {
+                console.log('post', post, '**blob**', blob)
             })
         )
     })

@@ -7,7 +7,9 @@
     "ssbweb": "./index.js"
   },
   "dependencies": {
+    "@sindresorhus/slugify": "^1.1.0",
     "file-type": "^15.0.1",
+    "filenamify": "^4.2.0",
     "mkdirp": "^1.0.4",
     "pull-scan": "^1.0.0",
     "pull-stream": "^3.6.14",

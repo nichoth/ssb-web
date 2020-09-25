@@ -55,4 +55,9 @@ toStream(sbot.blobs.get(hash))
 
 Make a static site generator that creates a page for each post
 
+----------------------------------------------------------------
+
+[filenamify](https://www.npmjs.com/package/filenamify)
+
+Try using the hash as a filename
 
