@@ -36,6 +36,9 @@ ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
 })
 ```
 
+---------------------------------------------------
+
+## notes
 https://medium.com/netscape/a-guide-to-create-a-nodejs-command-line-package-c2166ad0452e -- a nice node CLI guide
 
 [sbot.blobs.get](https://github.com/ssbc/ssb-serve-blobs/blob/master/index.js#L50)
