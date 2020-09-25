@@ -6,6 +6,8 @@ ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
     S(
         ssbWeb.getPosts({ id, sbot, type: 'ev.post' }),
 
+        ssbWeb.writeFiles(sbot, 'example/blobs-dir'),
+
         S.through(function noop () {}, function onEnd (err) {
             console.log('**on end**', err)
             sbot.close(null, function (err) {
