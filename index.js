@@ -10,9 +10,6 @@ var WriteFile = require('pull-write-file')
 var mkdirp = require('mkdirp')
 // var filenamify = require('filenamify')
 var slugify = require('@sindresorhus/slugify')
-// var scan = require('pull-scan')
-// var FileType = require('file-type');
-// var tee = require('pull-tee')
 
 
 function startSbot (appName, cb) {

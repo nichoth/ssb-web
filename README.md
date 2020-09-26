@@ -45,10 +45,8 @@ ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
 })
 ```
 
-
 ----------------------------------------------------------------
 
 [filenamify](https://www.npmjs.com/package/filenamify)
 
 Try using the hash as a filename
-
