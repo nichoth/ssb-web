@@ -53,7 +53,6 @@ function writeFiles (sbot, dir) {
         S(
             sbot.blobs.get(hash),
             WriteFile(filePath, {}, function (err) {
-                console.log('file written', err)
                 if (err) throw err
             })
         )

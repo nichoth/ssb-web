@@ -38,7 +38,7 @@ ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
             // msgs is [{post, blob}]
             // blob is the slugified filename
             console.log('collected messages', err, msgs)
-            // { type, text, mentions }
+            // post { type, text, mentions }
             console.log('content', msgs[0].value.content)
         })
     )
