@@ -44,6 +44,7 @@ function getPosts ({ id, sbot, type }) {
 
 function writeFiles (sbot, dir) {
     return S.map(function (post) {
+        // TODO it should write all the mentions, not just the first one
         var hash = post.value.content.mentions[0].link
         var slug = slugify(hash)
         if (!hash) return
