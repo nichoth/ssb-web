@@ -33,9 +33,9 @@ function startSbot (appName, cb) {
     })
 }
 
-function getPosts ({ id, sbot, type }) {
+function getPosts ({ id, sbot, type, reverse }) {
      return S(
-        sbot.createUserStream({ id }),
+        sbot.createUserStream({ id, reverse }),
         S.filter(function (msg) {
             return msg.value.content.type === type
         })

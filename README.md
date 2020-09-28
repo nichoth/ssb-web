@@ -26,7 +26,7 @@ ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
         // where `blob` is a string -- the slugified hash of the file
         // (the url where to get it). here files would be written to
         // currentFoler/example/folder/hash
-        ssbWeb.writeFiles(sbot, 'example/folder'),
+        // ssbWeb.writeFiles(sbot, 'example/folder'),
 
         // this means `current-directpry/example/blobs-dir`
         ssbWeb.writeFiles(sbot, 'example/blobs-dir'),

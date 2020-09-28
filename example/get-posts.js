@@ -4,7 +4,7 @@ var S = require('pull-stream')
 ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
     console.log('aaaaaaaa', id)
     S(
-        ssbWeb.getPosts({ id, sbot, type: 'ev.post' }),
+        ssbWeb.getPosts({ id, sbot, type: 'ev.post', reverse: true }),
 
         ssbWeb.writeFiles(sbot, 'example/blobs-dir'),
 
