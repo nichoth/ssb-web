@@ -1,7 +1,7 @@
 {
   "name": "ssb-web",
   "description": "Pronounced 'sbweb'",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "index.js",
   "bin": {
     "ssbweb": "./index.js"
