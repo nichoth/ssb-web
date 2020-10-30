@@ -12,7 +12,7 @@ var mkdirp = require('mkdirp')
 var slugify = require('@sindresorhus/slugify')
 
 
-function startSbot (appName, cb) {
+function startSbot (appName, plugins, cb) {
     // -------- setup --------------------
     var opts = { caps }
     var config = ssbConfigInject(appName, opts)
@@ -22,10 +22,14 @@ function startSbot (appName, cb) {
     config.logging.level = 'notice'
     // -----------------------------------------
 
-    var sbot = Sbot
-        .use(require('ssb-master'))
+    Sbot.use(require('ssb-master'))
         .use(require('ssb-blobs'))
-        .call(null, config)
+
+    plugins.forEach(function (plugin) {
+        Sbot.use(plugin)
+    })
+
+    var sbot = Sbot(config)
 
     sbot.whoami(function (err, info) {
         var { id } = info
