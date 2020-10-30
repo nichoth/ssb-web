@@ -2,8 +2,6 @@ var ssbWeb = require('../')
 var S = require('pull-stream')
 
 ssbWeb.startSbot('ssb-ev', function (err, { id, sbot }) {
-    // console.log('aaaaaaaa', id)
-
     S(
         ssbWeb.getPosts({ id, sbot, type: 'ev.post', reverse: true }),
 
