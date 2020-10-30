@@ -18,7 +18,11 @@ $ ./index.js ssb-ev-DEV ev.post --blobs=example-dir
 var ssbWeb = require('ssb-web')
 var S = require('pull-stream')
 
-ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
+var plugins = [
+    require('@nichoth/ssb-tags')({ type: 'post' })
+]
+
+ssbWeb.startSbot('ssb-ev-DEV', plugins, function (err, { id, sbot }) {
     S(
         ssbWeb.getPosts({ id, sbot, type: 'ev.post' }),
 
@@ -51,4 +55,3 @@ ssbWeb.startSbot('ssb-ev-DEV', function (err, { id, sbot }) {
 })
 ```
 
-----------------------------------------------------------------
