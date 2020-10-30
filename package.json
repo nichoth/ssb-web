@@ -30,7 +30,7 @@
   },
   "scripts": {
     "example": "node example/get-posts.js",
-    "postversion": "git push && git push --tags && npm publish",
+    "postversion": "git push && git push --tags",
     "test": "tape test/*.js"
   },
   "repository": {
