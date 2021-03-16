@@ -11,6 +11,10 @@ var mkdirp = require('mkdirp')
 // var filenamify = require('filenamify')
 var slugify = require('@sindresorhus/slugify')
 
+var _ = {
+    get: require('lodash/get')
+}
+
 
 function startSbot (appName, plugins, cb) {
     // -------- setup --------------------
@@ -49,9 +53,10 @@ function getPosts ({ id, sbot, type, reverse }) {
 function writeFiles (sbot, dir) {
     return S.map(function (post) {
         // TODO it should write all the mentions, not just the first one
-        var hash = post.value.content.mentions[0].link
-        var slug = slugify(hash)
+        var hash = _.get(post, 'value.content.mentions[0].link', '')
+        // var hash = post.value.content.mentions[0].link
         if (!hash) return
+        var slug = slugify(hash)
         mkdirp.sync(dir)
         var filePath = path.resolve(dir, slug)
 

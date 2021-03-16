@@ -6,6 +6,11 @@ var home = require('user-home')
 var S = require('pull-stream')
 var path = require('path')
 
+var toPull = require('stream-to-pull-stream')
+var fs = require('fs')
+var sharp = require('sharp')
+var glob = require('glob')
+
 var _sbot
 var _id
 var _appName
@@ -43,6 +48,52 @@ test('get posts', function (t) {
     )
 })
 
+test('write files', function (t) {
+    t.plan(3)
+
+    // ----- first publish some files -----------------------------------
+    S(
+        toPull(fs.createReadStream(__dirname + '/cinnamon-roll.jpg')),
+        _sbot.blobs.add((err, hash) => {
+
+            _sbot.publish({
+                type: 'post',
+                text: 'test2',
+                mentions: [{
+                    link: hash        // the hash given by blobs.add
+                }]
+            }, function (err, msg) {
+                t.error(err, 'shouold not have error')
+    // --------------------------------------------------
+
+                S(
+                    ssbWeb.getPosts({ id: _id, sbot: _sbot, type: 'post' }),
+                    ssbWeb.writeFiles(_sbot, __dirname + '/imgs'),
+                    S.drain(function onEvent () {
+                        // noop
+                    }, function onEnd (err) {
+                        t.error(err, 'shouold not have error')
+                        // now read the file
+                        glob(__dirname + '/imgs/*', (err, files) => {
+                            console.log('globbing', err, files)
+                            files.forEach(function (fileName) {
+                                sharp(__dirname + '/imgs/' + fileName)
+                                    .resize(500)
+                                    .toFile(__dirname + '/output.jpg', (err) => {
+                                        t.error(err, 'should not have error')
+                                    })
+                            })
+                        })
+                    })
+                )
+            })
+        })
+    )
+
+
+
+})
+
 test('done', function (t) {
     _sbot.close((err) => {
         rimraf.sync(path.join(home, '.' + _appName))
@@ -52,4 +103,3 @@ test('done', function (t) {
         t.end()
     })
 })
-
