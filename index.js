@@ -10,6 +10,7 @@ var WriteFile = require('pull-write-file')
 var mkdirp = require('mkdirp')
 // var filenamify = require('filenamify')
 var slugify = require('@sindresorhus/slugify')
+var paramap = require('pull-paramap')
 
 var _ = {
     get: require('lodash/get')
@@ -51,11 +52,10 @@ function getPosts ({ id, sbot, type, reverse }) {
 }
 
 function writeFiles (sbot, dir) {
-    return S.map(function (post) {
+    return paramap(function (post, cb) {
         // TODO it should write all the mentions, not just the first one
-        var hash = _.get(post, 'value.content.mentions[0].link', '')
-        // var hash = post.value.content.mentions[0].link
-        if (!hash) return
+        var hash = _.get(post, 'value.content.mentions[0].link', null)
+        if (!hash) return cb(null, null)
         var slug = slugify(hash)
         mkdirp.sync(dir)
         var filePath = path.resolve(dir, slug)
@@ -63,11 +63,10 @@ function writeFiles (sbot, dir) {
         S(
             sbot.blobs.get(hash),
             WriteFile(filePath, {}, function (err) {
-                if (err) throw err
+                if (err) return cb(err)
+                cb(null, hash)
             })
         )
-
-        return { post, blob: slug }
     })
 }
 

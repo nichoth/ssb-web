@@ -73,13 +73,15 @@ test('write files', function (t) {
                         // noop
                     }, function onEnd (err) {
                         t.error(err, 'shouold not have error')
+
                         // now read the file
                         glob(__dirname + '/imgs/*', (err, files) => {
-                            console.log('globbing', err, files)
                             files.forEach(function (fileName) {
-                                sharp(__dirname + '/imgs/' + fileName)
+
+                                var outPath = __dirname + '/imgs/output.jpg'
+                                sharp(fileName)
                                     .resize(500)
-                                    .toFile(__dirname + '/output.jpg', (err) => {
+                                    .toFile(outPath, err => {
                                         t.error(err, 'should not have error')
                                     })
                             })

@@ -92,3 +92,5 @@ bundle.js
 file*
 
 example/blobs-dir/
+test/imgs/*
+
