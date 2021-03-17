@@ -76,6 +76,7 @@ test('write files', function (t) {
 
                         // now write the second file
                         glob(__dirname + '/imgs/*', (err, files) => {
+                            if (err) throw err
                             files.forEach(function (fileName) {
 
                                 var outPath = __dirname + '/output.jpg'
