@@ -49,7 +49,7 @@ test('get posts', function (t) {
 })
 
 test('write files', function (t) {
-    t.plan(3)
+    t.plan(5)
 
     // ----- first publish some files -----------------------------------
     S(
@@ -74,15 +74,19 @@ test('write files', function (t) {
                     }, function onEnd (err) {
                         t.error(err, 'shouold not have error')
 
-                        // now read the file
+                        // now write the second file
                         glob(__dirname + '/imgs/*', (err, files) => {
                             files.forEach(function (fileName) {
 
-                                var outPath = __dirname + '/imgs/output.jpg'
+                                var outPath = __dirname + '/output.jpg'
                                 sharp(fileName)
                                     .resize(500)
                                     .toFile(outPath, err => {
                                         t.error(err, 'should not have error')
+                                        fs.stat(outPath, (err, stats) => {
+                                            t.error(err, 'no error')
+                                            t.ok(stats, 'file stats')
+                                        })
                                     })
                             })
                         })

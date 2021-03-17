@@ -36,7 +36,7 @@
   },
   "scripts": {
     "example": "node example/get-posts.js",
-    "postversion": "git push && git push --tags",
+    "postversion": "git push && git push --tags && npm publish",
     "test": "tape test/*.js | tap-spec"
   },
   "repository": {

@@ -93,4 +93,5 @@ file*
 
 example/blobs-dir/
 test/imgs/*
+test/output.jpg
 
