@@ -64,7 +64,7 @@ function writeFiles (sbot, dir) {
             sbot.blobs.get(hash),
             WriteFile(filePath, {}, function (err) {
                 if (err) return cb(err)
-                cb(null, hash)
+                cb(null, { post, blobHash: hash })
             })
         )
     })
