@@ -55,7 +55,7 @@ function writeFiles (sbot, dir) {
     return paramap(function (post, cb) {
         // TODO it should write all the mentions, not just the first one
         var hash = _.get(post, 'value.content.mentions[0].link', null)
-        if (!hash) return cb(null, null)
+        if (!hash) return cb(null, { post, blobHash: null })
         var slug = slugify(hash)
         mkdirp.sync(dir)
         var filePath = path.resolve(dir, slug)

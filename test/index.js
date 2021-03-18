@@ -49,7 +49,7 @@ test('get posts', function (t) {
 })
 
 test('write files', function (t) {
-    t.plan(5)
+    t.plan(6)
 
     // ----- first publish some files -----------------------------------
     S(
@@ -69,7 +69,9 @@ test('write files', function (t) {
                 S(
                     ssbWeb.getPosts({ id: _id, sbot: _sbot, type: 'post' }),
                     ssbWeb.writeFiles(_sbot, __dirname + '/imgs'),
-                    S.drain(function onEvent () {
+                    S.filter(({ post, blobHash }) => (post && blobHash)),
+                    S.drain(function onEvent (opts) {
+                        t.ok(opts && opts.post && opts.blobHash)
                         // noop
                     }, function onEnd (err) {
                         t.error(err, 'shouold not have error')
