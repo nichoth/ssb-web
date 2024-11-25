@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@sindresorhus/slugify": "^1.1.0",
-    "file-type": "^15.0.1",
+    "file-type": "^16.5.4",
     "filenamify": "^4.2.0",
     "lodash": "^4.17.21",
     "mkdirp": "^1.0.4",
@@ -28,7 +28,7 @@
     "glob": "^7.1.6",
     "pull-stream": "^3.6.14",
     "rimraf": "^3.0.2",
-    "sharp": "^0.27.2",
+    "sharp": "^0.32.6",
     "stream-to-pull-stream": "^1.7.3",
     "tap-spec": "^5.0.0",
     "tape": "^5.0.1",
